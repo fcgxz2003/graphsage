@@ -7,7 +7,7 @@ init_fn = tf.keras.initializers.GlorotUniform
 
 
 class GraphSageSupervised(tf.keras.Model):
-    def __init__(self, dim, sample, num_classes):
+    def __init__(self, dim, sample, LEARNING_RATE):
         super().__init__()
         self.layer1 = Layer1MeanAggregator(src_dim=dim, dst_dim=dim, sample=sample[0], name="layer1")
         self.layer2 = Layer2MeanAggregator(src_dim=dim, dst_dim=dim, sample=sample[1], name="layer2")
@@ -39,9 +39,12 @@ class GraphSageSupervised(tf.keras.Model):
                                             , name="dense4"
                                             )
 
+        self.optimizer = tf.keras.optimizers.SGD(learning_rate=LEARNING_RATE)
+        self.loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
     def call(self, src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg):
         src_neg, dst_neg = self.layer2.call(src_neg, src_neg_neg, dst_neg, dst_neg_neg)
-        src, dst = self.layer2.call(src, src_neg, dst, dst_neg)
+        src, dst = self.layer1.call(src, src_neg, dst, dst_neg)
         x = tf.concat([src, dst], 1)
         x = self.dense1(x)
         x = self.dense2(x)
@@ -51,8 +54,10 @@ class GraphSageSupervised(tf.keras.Model):
 
     def train(self, src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg, inputs_labels):
         with tf.GradientTape() as tape:
-            predict = self.call(src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg)
-            loss = self.compute_uloss(predict, inputs_labels)
+            predicted = self.call(src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg)
+            # print(predicted)
+            # print(tf.convert_to_tensor(inputs_labels))
+            loss = self.loss_fn(tf.convert_to_tensor(inputs_labels), predicted)
 
         grads = tape.gradient(loss, self.trainable_weights)
         self.optimizer.apply_gradients(zip(grads, self.trainable_weights))
