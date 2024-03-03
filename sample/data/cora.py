@@ -3,7 +3,7 @@
 import numpy as np
 from collections import defaultdict
 
-datapath = "datasamples/cora"
+datapath = "sample/data/core"
 
 
 def load_cora():

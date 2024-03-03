@@ -4,7 +4,7 @@ import numpy as np
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
 
-datapath = "datasamples/ppi"
+datapath = "sample/data/ppi"
 
 def load_ppi():
     num_nodes = 14755

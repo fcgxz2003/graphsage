@@ -61,6 +61,16 @@ class GraphSage(tf.keras.Model):
         x = self.dense_2(x)
         return x
 
+    @tf.function(
+        input_signature=[
+            tf.TensorSpec(shape=(64, 1433), dtype=tf.float32),
+            tf.TensorSpec(shape=(192, 1433), dtype=tf.float32),
+            tf.TensorSpec(shape=(576, 1433), dtype=tf.float32),
+            tf.TensorSpec(shape=(64, 1433), dtype=tf.float32),
+            tf.TensorSpec(shape=(192, 1433), dtype=tf.float32),
+            tf.TensorSpec(shape=(576, 1433), dtype=tf.float32),
+            tf.TensorSpec(shape=(64, 1), dtype=tf.float32),
+        ])
     def train(self, src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg, inputs_labels):
         with tf.GradientTape() as tape:
             predicted = self.call(src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg)
