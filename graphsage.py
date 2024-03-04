@@ -16,9 +16,7 @@ class GraphSage(tf.keras.Model):
         :param learning_rate: the learning rate.
         """
         super().__init__()
-
         self.samples = samples
-
         # Build mean aggregation layers.
         self.seq_layers = []
         for i in range(len(samples)):

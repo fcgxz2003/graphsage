@@ -6,7 +6,7 @@ import tensorflow as tf
 from itertools import islice
 
 
-from sample.data.cora import load_cora
+from data.cora import load_cora
 from graphsage import GraphSage
 
 # The aggregation number of layers.
@@ -131,10 +131,10 @@ if __name__ == "__main__":
         loss = graphsage.train(src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg, inputs_labels)
         print("loss: ", loss)
 
-    print(graphsage.summary())
+    # print(graphsage.summary())
     tf.saved_model.save(
         graphsage,
-        "graphsage",
+        "model",
         signatures={
             "call": graphsage.call,
             "train": graphsage.train,

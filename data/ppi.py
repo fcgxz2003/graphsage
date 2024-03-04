@@ -4,13 +4,13 @@ import numpy as np
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
 
-datapath = "sample/data/ppi"
+data_path = "data/ppi"
 
 def load_ppi():
     num_nodes = 14755
     num_feats = 50
 
-    feat_data = np.load(datapath + "/toy-ppi-feats.npy")
+    feat_data = np.load(data_path + "/toy-ppi-feats.npy")
     feat_data = feat_data.astype(np.float32)
 
     scaler = StandardScaler()
@@ -18,7 +18,7 @@ def load_ppi():
     feat_data = scaler.transform(feat_data)
 
     adj_lists = defaultdict(set)
-    with open(datapath + "/toy-ppi-walks.txt") as fp:
+    with open(data_path + "/toy-ppi-walks.txt") as fp:
         for line in fp:
             info = line.strip().split()
             item1 = int(info[0])
