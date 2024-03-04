@@ -35,7 +35,7 @@ class GraphSage(tf.keras.Model):
                                              , activation=tf.nn.softmax
                                              , use_bias=False
                                              , kernel_initializer=init_fn
-                                             , name="dense4"
+                                             , name="dense2"
                                              )
         self.dense_2.build(input_shape=(None, 32))
 

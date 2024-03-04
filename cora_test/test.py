@@ -5,13 +5,11 @@ import numpy as np
 import tensorflow as tf
 from itertools import islice
 
-
 from data.cora import load_cora
-from graphsage import GraphSage
+from cora_test.graphsage import GraphSage
 
 # The aggregation number of layers.
 SAMPLE_SIZES = [3, 3]
-INTERNAL_DIM = 128
 
 # Training parameters
 BATCH_SIZE = 64
@@ -128,7 +126,9 @@ if __name__ == "__main__":
                                                                                           neigh_dict,
                                                                                           sample=SAMPLE_SIZES)
 
-        loss = graphsage.train(src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg, inputs_labels)
+        loss = graphsage.train(tf.constant(src), tf.constant(src_neg), tf.constant(src_neg_neg),
+                               tf.constant(dst), tf.constant(dst_neg), tf.constant(dst_neg_neg),
+                               tf.constant(inputs_labels))
         print("loss: ", loss)
 
     # print(graphsage.summary())
