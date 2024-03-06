@@ -147,14 +147,14 @@ if __name__ == '__main__':
 
     # Generate training minibatch.
     batch = generate_training_batch(train_pair, num_nodes, BATCH_SIZE)
-    for inputs, inputs_labels in islice(batch, 0, TRAINING_STEPS):
+    for inputs, labels in islice(batch, 0, TRAINING_STEPS):
         src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg = generate_aggregation_nodes(inputs, ip_address,
                                                                                           neigh_dict,
                                                                                           sample=SAMPLE_SIZES)
 
         loss = graphsage.train(tf.constant(src), tf.constant(src_neg), tf.constant(src_neg_neg),
                                tf.constant(dst), tf.constant(dst_neg), tf.constant(dst_neg_neg),
-                               tf.constant(inputs_labels))
+                               tf.constant(labels))
         print("loss: ", loss)
 
     # print(graphsage.summary())

@@ -60,10 +60,10 @@ class GraphSage(tf.keras.Model):
             tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float64),
             tf.TensorSpec(shape=(None, 1), dtype=tf.float64),
         ])
-    def train(self, src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg, inputs_labels):
+    def train(self, src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg, labels):
         with tf.GradientTape() as tape:
             predicted = self.call(src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg)
-            loss = self.loss_fn(tf.convert_to_tensor(inputs_labels), predicted)
+            loss = self.loss_fn(tf.convert_to_tensor(labels), predicted)
 
         grads = tape.gradient(loss, self.trainable_weights)
         self.optimizer.apply_gradients(zip(grads, self.trainable_weights))
