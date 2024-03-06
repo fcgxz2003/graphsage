@@ -3,7 +3,7 @@
 import numpy as np
 from collections import defaultdict
 
-data_path = "../data/cora"
+data_path = "data/cora"
 
 def load_cora():
     num_nodes = 2708

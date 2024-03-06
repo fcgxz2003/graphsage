@@ -16,6 +16,7 @@ tensorflow-gpu   2.6.0
 ```
 
 # Running the code
+
 ```
 python test.py
 ```
