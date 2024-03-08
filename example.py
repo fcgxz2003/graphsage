@@ -158,11 +158,12 @@ if __name__ == '__main__':
         print("loss: ", loss)
 
     # print(graphsage.summary())
+    # There is no need to save the "train" function.
     tf.saved_model.save(
         graphsage,
         "model",
         signatures={
             "call": graphsage.call,
-            "train": graphsage.train,
+            # "train": graphsage.train,
         },
     )
