@@ -48,7 +48,7 @@ class GraphSage(tf.keras.Model):
         src, dst = self.seq_layers[0].call(src, src_neg_aggregated, dst, dst_neg_aggregated)
         x = tf.concat([src, dst], 1)
         x = self.dense(x)
-        return x
+        return tf.cast(x, tf.float64)
 
     @tf.function(
         input_signature=[
