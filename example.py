@@ -164,6 +164,6 @@ if __name__ == '__main__':
         "model",
         signatures={
             "call": graphsage.call,
-            "train": graphsage.train,
+            # "train": graphsage.train,
         },
     )

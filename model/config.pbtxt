@@ -31,11 +31,6 @@ input [
     name: "src_neg_neg"
     data_type: TYPE_FP64
     dims: [-1,-1,-1,32]
-  },
-  {
-    name: "labels"
-    data_type: TYPE_FP64
-    dims: [-1,1]
   }
 ]
 output [
