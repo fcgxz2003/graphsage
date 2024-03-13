@@ -36,29 +36,29 @@ class GraphSage(tf.keras.Model):
 
     @tf.function(
         input_signature=[
-            tf.TensorSpec(shape=(None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float64),
+            tf.TensorSpec(shape=(None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float32),
         ])
     def call(self, src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg):
         src_neg_aggregated, dst_neg_aggregated = self.seq_layers[1].call(src_neg, src_neg_neg, dst_neg, dst_neg_neg)
         src, dst = self.seq_layers[0].call(src, src_neg_aggregated, dst, dst_neg_aggregated)
         x = tf.concat([src, dst], 1)
         x = self.dense(x)
-        return tf.cast(x, tf.float64)
+        return tf.cast(x, tf.float32)
 
     @tf.function(
         input_signature=[
-            tf.TensorSpec(shape=(None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float64),
-            tf.TensorSpec(shape=(None, 1), dtype=tf.float64),
+            tf.TensorSpec(shape=(None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, None, None, 32), dtype=tf.float32),
+            tf.TensorSpec(shape=(None, 1), dtype=tf.float32),
         ])
     def train(self, src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg, labels):
         with tf.GradientTape() as tape:
@@ -87,7 +87,7 @@ class MeanAggregator(tf.keras.layers.Layer):
         self.sample = sample
         self.w = self.add_weight(name=kwargs["name"] + "_weight"
                                  , shape=(input_dim * 2, output_dim)
-                                 , dtype=tf.float64
+                                 , dtype=tf.float32
                                  , initializer=init_fn
                                  , trainable=True
                                  )

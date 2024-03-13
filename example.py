@@ -117,7 +117,7 @@ if __name__ == '__main__':
         return '.'.join(str(random.randint(0, 255)) for _ in range(4))
 
 
-    def ipv4_to_int(ipv4):
+    def ipv4_to_float32(ipv4):
         binary_ip = format(int(ipaddress.IPv4Address(ipv4)), '032b')
         feature_vector = [float(bit) for bit in binary_ip]
         return feature_vector
@@ -131,7 +131,7 @@ if __name__ == '__main__':
         ip = generate_random_ipv4()
         if ip not in unique_ips:
             unique_ips.add(ip)
-            ip_address = np.vstack([ip_address, np.array(ipv4_to_int(ip))])
+            ip_address = np.vstack([ip_address, np.array(ipv4_to_float32(ip))])
             index = index + 1
 
     pair = []
@@ -151,10 +151,9 @@ if __name__ == '__main__':
         src, src_neg, src_neg_neg, dst, dst_neg, dst_neg_neg = generate_aggregation_nodes(inputs, ip_address,
                                                                                           neigh_dict,
                                                                                           sample=SAMPLE_SIZES)
-
-        loss = graphsage.train(tf.constant(src), tf.constant(src_neg), tf.constant(src_neg_neg),
-                               tf.constant(dst), tf.constant(dst_neg), tf.constant(dst_neg_neg),
-                               tf.constant(labels))
+        loss = graphsage.train(tf.cast(src, tf.float32), tf.cast(src_neg, tf.float32), tf.cast(src_neg_neg, tf.float32),
+                               tf.cast(dst, tf.float32), tf.cast(dst_neg, tf.float32), tf.cast(dst_neg_neg, tf.float32),
+                               tf.cast(labels, tf.float32))
         print("loss: ", loss)
 
     # print(graphsage.summary())
